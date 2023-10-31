@@ -1,47 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ExpenseItem from './components/Expenses/ExpenseItem'
 import Expenses from './components/Expenses/Expenses'
 import NewExpense from './components/NewExpense/NewExpense'
 
+let Dummy_expense =[]
 
 const App = () => {
 
-    let expenses =[
-        {
-            id:'e1',
-            title:"Silai ka kharch",
-            amount:1200,
-            date:new Date(2023,2,10)
+    
+    const [expenses,setExpenses] = useState(Dummy_expense);
 
-        },
-        {
-            id:'e2',
-            title:"dudh ka kharch",
-            amount:200,
-            date:new Date(2023,5,12)
+    useEffect(()=>{
 
-        },
-        {
-            id:'e3',
-            title:"school ka kharch",
-            amount:1800,
-            date:new Date(2023,6,1)
-
-        },
-        {
-            id:'e4',
-            title:"ghar ka kharch",
-            amount:9000,
-            date:new Date(2023,2,12)
-
+        fetch('http://localhost/sample-api/api/read.php').then(
+        response => {
+            return response.json();
         }
+        ).then(
+            data => {
+                setExpenses(data);
+            }
+        )
 
-    ]
+    },[])
+
+    
+
+    const childtoapp = (dataagya) => {
+        const updatedexpense = [dataagya,...expenses]
+        setExpenses(updatedexpense);
+    }
 
   return (
     <div>
         <h1>Let's Get Started!!</h1>
-        <NewExpense/>
+        <NewExpense lelo = {childtoapp}/>
         <Expenses item = {expenses}/>
         
     </div>
